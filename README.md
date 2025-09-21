@@ -27,7 +27,6 @@ QQ、微信、Telegram、Discord、Slack、Teams……**通杀**。
 ## 一键上手
 1. 下载 `SpamKeys.vbs`  
 2. 双击 → 按提示填数字 → 把窗口点到聊天框 → 等 5 秒 → 看烟花  
-3. 想停？`Ctrl+Break` 或关掉 `wscript.exe` 进程即可
 
 ---
 
