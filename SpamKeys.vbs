@@ -69,7 +69,7 @@ For i = 1 to CInt(iterations)
     
     message = Replace(baseMessage, "{random}", randomStr)
     
-    WshShell.SendKeys EncodeSendKeys(message)
+    SendTextWithClipboard WshShell, message
     
     If sendMethod = "1" Then
         WshShell.SendKeys "{ENTER}"
@@ -91,21 +91,22 @@ Function IIf(expr, trueVal, falseVal)
     End If
 End Function
 
-Function EncodeSendKeys(text)
-    Dim i, result
-    result = ""
+Sub SendTextWithClipboard(shellObj, textToSend)
+    Dim clipBoard
+    Set clipBoard = CreateObject("HTMLFile")
     
-    For i = 1 to Len(text)
-        Dim currentChar
-        currentChar = Mid(text, i, 1)
-        
-        Select Case currentChar
-            Case "+", "^", "%", "~", "(", ")", "{", "}", "[", "]", "\"
-                result = result & "{" & currentChar & "}"
-            Case Else
-                result = result & currentChar
-        End Select
-    Next
+    On Error Resume Next
+    Dim oldClipboard
+    oldClipboard = shellObj.Exec("mshta.exe ""javascript:clipboardData.getData('Text');close();""").StdOut.ReadAll
     
-    EncodeSendKeys = result
-End Function
+    shellObj.Run "mshta.exe ""javascript:clipboardData.setData('Text','" & Replace(textToSend, "'", "\'") & "');close();""", 0, True
+    WScript.Sleep 100
+    
+    shellObj.SendKeys "^v"
+    WScript.Sleep 100
+    
+    If Err.Number = 0 And oldClipboard <> "" Then
+        shellObj.Run "mshta.exe ""javascript:clipboardData.setData('Text','" & Replace(oldClipboard, "'", "\'") & "');close();""", 0, True
+    End If
+    On Error GoTo 0
+End Sub
