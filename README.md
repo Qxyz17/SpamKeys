@@ -33,7 +33,7 @@ QQ、微信、Telegram、Discord、Slack、Teams……**通杀**。
 ## 自定义参数（懒人版）
 不想每次都填弹窗？用命令行直接喂参数：  
 ```cmd
-wscript SpamKeys.vbs "测试{random}" 100 20 1
+wscript SpamKeys.vbs "test{random}" 100 20 1
 ```
 参数顺序：模板、次数、每秒条数、发送方式（1=Enter，2=Ctrl+Enter）
 
